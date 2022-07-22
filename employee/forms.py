@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from .models import empleave_model
-# ,status_model
+# ,myuser_model
+# from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.forms.widgets import DateInput # need to import
 
@@ -17,9 +18,11 @@ class empleave_form(ModelForm):
         }
 
 
-# class status_form(ModelForm):
+
+# class myuser_form(UserCreationForm):
 #     class Meta:
-#         model=status_model
+#         model=myuser_model
 #         fields='__all__'
+
 
 

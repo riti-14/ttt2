@@ -1,5 +1,5 @@
 from django.db import models
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 
 
@@ -8,15 +8,9 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 
-class myuser(AbstractUser):
+class myuser_model(AbstractUser):
 
-    name=models.CharField(max_length=50)
-    email=models.EmailField(unique=True)
-    user_name=models.CharField(max_length=50)
-    password=models.CharField(max_length=20)
-    confirm_password=models.CharField(max_length=20)
-
-    status=models.CharField(max_length=30)
+    status=models.BooleanField(default=None,null=True)
     # status=models.CharField(max_length=30,
     # choices=(
     #         ('approve','approve'),

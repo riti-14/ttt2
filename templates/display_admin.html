@@ -35,7 +35,7 @@
 <body>
   
 
-      <form method="'post" ></form>
+      
     <table id="customers">
         
       
@@ -58,12 +58,12 @@
           {% for j in getuserdata %}
             
               <tr>
-                  {% if not j.is_superuser  %}
+                  
                     <td>{{j.id}}</td>
                     <td>{{j.first_name}}</td>
                     <td>{{j.email}}</td>
                     
-                  {% endif %}
+                  
 
                   {% for i in getleavedata  %}
                     {% if i.name == j.first_name %}

@@ -10,13 +10,40 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import login,authenticate
 # from django.http import JsonResponse
+from .models import myuser_model
+
+
+# def empregister_view(request):
+    
+#     if request.method == 'POST':
+#         myuserform=myuser_form(request.POST)
+#         if myuserform.is_valid():
+#             myuserform.save()
+#             return redirect('home')
+#     else:
+#             myuserform=myuser_form()
+
+#     # context={} 
+#     return render(request,'emp_register.html',{'myuserform':myuserform})
+
+
+# def home_view(request):
+#     return render(request,'home.html') 
 
 
 
 
-from .models import myuser
 
-# # Create your views here.
+
+
+
+
+
+
+
+
+
+# Create your views here.
 def empregister_view(request):
     if request.method=='POST':
         name=request.POST['nm']
@@ -44,7 +71,7 @@ def empregister_view(request):
             messages.error(request,'Confirm Password do not match with Password')
             return redirect('empregister')
 
-        create_user=myuser.objects.create_user(user_name,email,password)
+        create_user=myuser_model.objects.create_user(user_name,email,password)
         create_user.first_name=name
         create_user.save()
         messages.success(request,'user registered successfully..')
@@ -74,8 +101,8 @@ def emplogin_view(request):
 def displayuser_view(request,id):
 
     
-        getdata=myuser.objects.get(id=request.user.pk) 
-        getstatus=myuser.objects.filter(id=id).values('status')
+        getdata=myuser_model.objects.get(id=request.user.pk) 
+        getstatus=myuser_model.objects.filter(id=id).values('status')
         context={'getdata':getdata,'getstatus':getstatus}
         
         return render(request,'display_user.html',context)
@@ -84,7 +111,7 @@ def displayuser_view(request,id):
 
 
 def displayadmin_view(request):
-    getuserdata =myuser.objects.all()
+    getuserdata =myuser_model.objects.all()
     getleavedata=empleave_model.objects.all()
     # user_count = User.objects.count()
     return render(request,'display_admin.html',{'getuserdata':getuserdata,'getleavedata':getleavedata})
@@ -92,29 +119,39 @@ def displayadmin_view(request):
 
 
 def approve_view(request,id):
+    # import pdb; pdb.set_trace()     
+    user=myuser_model.objects.get(id=id)
     if request.method == 'POST':
-        if request.POST.get('approve_btn') == "Approve":
-            # import pdb
-            # pdb.set_trace()
-            save_value=myuser.objects.filter(id=id).values('status')
-            print(save_value)
-            new_value=myuser(status=request.POST['approve_btn'])
-            new_value.save() 
-            print(new_value)
-            var=list(empleave_model.objects.filter(id=id).values('email'))
-            subject='LEAVE'
-            msg="approved"
-            to=var[0]['email']
-            res=send_mail(subject,msg,settings.EMAIL_HOST_USER,[to])
-            if (res==1):
-                msg='sent mail successfully'
-            else:
-                msg='mail could not sent'
-            # return render(request,'display_user.html',{'new_value':new_value})
-            return HttpResponse(msg)
-    
-        else:
-            return HttpResponse('error')    
+        # import pdb; pdb.set_trace()    
+        print('*****************************')
+        request.user.status = True
+        print('*****************************')       
+        user.save()
+        print('*****************************')
+        print(user)
+        return redirect('home')
+        #
+        # request.user_status==True
+       
+        # new_value=myuser_model(status=request.POST['approve_btn'])
+        # new_value.save() 
+        # print(new_value)
+        # var=list(empleave_model.objects.filter(id=pk).values('email'))
+        # subject='LEAVE'
+        # msg="approved"
+        # to=var[0]['email']
+        # res=send_mail(subject,msg,settings.EMAIL_HOST_USER,[to])
+        # if (res==1):
+        #     msg='sent mail successfully'
+        # else:
+        #     msg='mail could not sent'
+        # # return render(request,'display_user.html',{'new_value':new_value})
+        # return HttpResponse(msg)
+
+        # else:
+        #     return HttpResponse('error')    
+    else:
+        print('errror')
             
             
 def home_view(request):
@@ -125,7 +162,8 @@ def reject_view(request,id):
     if request.method == 'POST':
         if request.POST['reject_btn'] == "Reject":
             
-            new_value=myuser(status=request.POST.get('reject_btn'))  
+            
+            new_value=myuser_model(status=request.POST['reject_btn'])  
             new_value.save()  
             var=list(empleave_model.objects.filter(id=id).values('email'))
             subject='LEAVE'

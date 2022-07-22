@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-AUTH_USER_MODEL='employee.myuser'
+AUTH_USER_MODEL='employee.myuser_model'
 
 TIME_ZONE = 'UTC'
 
