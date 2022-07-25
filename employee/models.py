@@ -10,7 +10,7 @@ from django.contrib.auth.models import AbstractUser
 
 class myuser_model(AbstractUser):
 
-    status=models.BooleanField(default=None,null=True)
+    status=models.BooleanField(default=False)
     # status=models.CharField(max_length=30,
     # choices=(
     #         ('approve','approve'),

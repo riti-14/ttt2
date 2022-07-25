@@ -93,7 +93,7 @@ def emplogin_view(request):
             else:
                 # messages.success(request,'you have successfully logged in...')
                 return redirect('displayuser',request.user.id)  
-                
+                # request.user.id
     else:
         return render(request,'emp_login.html')
 

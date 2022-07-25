@@ -67,9 +67,13 @@
           <button >Apply for leave</button>
          </a>
          </td>
-        {{getstatus.status}}
+
+         {% for i in getstatus %}
+        {{ i.status }}
+          {% endfor %}
           
         {% else %}
+
 
         <p>invalid</p>
         {% endif%}

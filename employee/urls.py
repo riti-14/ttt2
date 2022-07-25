@@ -7,7 +7,7 @@ urlpatterns = [
     path('empregister_view/',views.empregister_view,name='empregister'),
     path('emplogin_view/',views.emplogin_view,name='emplogin'),
     path('displayuser_view/<int:id>/',views.displayuser_view,name='displayuser'),
-# #   path('displayuser_view/',views.displayuser_view,name='displayuser'),
+  # path('displayuser_view/',views.displayuser_view,name='displayuser'),
     path('displayadmin_view/',views.displayadmin_view,name='displayadmin'),
 
 
