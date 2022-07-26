@@ -10,13 +10,13 @@ from django.contrib.auth.models import AbstractUser
 
 class myuser_model(AbstractUser):
 
-    status=models.BooleanField(default=False)
-    # status=models.CharField(max_length=30,
-    # choices=(
-    #         ('approve','approve'),
-    #         ('reject','reject')
-    #         )
-    #     )
+    # status=models.BooleanField(default=False)
+    status=models.CharField(max_length=30,
+    choices=(
+            ('APPROVE','approve'),
+            ('REJECT','reject')
+            )
+        )
 
 
 # class empregister_model(models.Model):

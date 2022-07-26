@@ -60,7 +60,7 @@
         <td> {{ getdata.id }}</td>
         <td> {{ getdata.first_name}}</td>
         <td> {{ getdata.username}}</td>
-        
+        <td>{{getdata.status}}</td>
         
         
         <td> <a href="{% url 'empleave'  %}">
@@ -68,10 +68,7 @@
          </a>
          </td>
 
-         {% for i in getstatus %}
-        {{ i.status }}
-          {% endfor %}
-          
+        
         {% else %}
 
 

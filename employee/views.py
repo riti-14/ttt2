@@ -119,15 +119,13 @@ def displayadmin_view(request):
 
 
 def approve_view(request,id):
-    # import pdb; pdb.set_trace()     
+         
     user=myuser_model.objects.get(id=id)
+    unamematch=myuser_model.objects.filter(user=user.user)[0]
     if request.method == 'POST':
         # import pdb; pdb.set_trace()    
-        print('*****************************')
-        request.user.status = True
-        print('*****************************')       
+        user.status = 'APPROVE'
         user.save()
-        print('*****************************')
         print(user)
         return redirect('home')
         #
