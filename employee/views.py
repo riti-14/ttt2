@@ -1,4 +1,5 @@
 
+import imp
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import redirect, render
 from .models import empleave_model
@@ -100,9 +101,10 @@ def emplogin_view(request):
 
 def displayuser_view(request,id):
 
-    
+        # import pdb; pdb.set_trace()
         getdata=myuser_model.objects.get(id=request.user.pk) 
-        getstatus=myuser_model.objects.filter(id=id).values('status')
+        getstatus=myuser_model.objects.filter(username=request.user).values('status')[0]['status']
+        print(getstatus)
         context={'getdata':getdata,'getstatus':getstatus}
         
         return render(request,'display_user.html',context)
@@ -118,36 +120,32 @@ def displayadmin_view(request):
     # ,'user_count':user_count
 
 
-def approve_view(request,id):
-         
-    user=myuser_model.objects.get(id=id)
-    unamematch=myuser_model.objects.filter(user=user.user)[0]
+def approve_view(request,username,pk):
+     
+    try:
+        user=myuser_model.objects.get(username=username)
+    except:
+        print('error')
+
     if request.method == 'POST':
-        # import pdb; pdb.set_trace()    
+        emp=myuser_model.objects.filter(username=username)[0]
         user.status = 'APPROVE'
         user.save()
         print(user)
-        return redirect('home')
-        #
-        # request.user_status==True
-       
-        # new_value=myuser_model(status=request.POST['approve_btn'])
-        # new_value.save() 
-        # print(new_value)
-        # var=list(empleave_model.objects.filter(id=pk).values('email'))
-        # subject='LEAVE'
-        # msg="approved"
-        # to=var[0]['email']
-        # res=send_mail(subject,msg,settings.EMAIL_HOST_USER,[to])
-        # if (res==1):
-        #     msg='sent mail successfully'
-        # else:
-        #     msg='mail could not sent'
-        # # return render(request,'display_user.html',{'new_value':new_value})
-        # return HttpResponse(msg)
+        
+        var=list(empleave_model.objects.filter(id=pk).values('email'))
+        subject='LEAVE'
+        msg="approved"
+        to=var[0]['email']
+        send_mail(subject,msg,settings.EMAIL_HOST_USER,[to])
+        if send_mail:
+            msg='sent mail successfully'
+        else:
+            msg='mail could not sent'
+        
+        return HttpResponse(msg)
 
-        # else:
-        #     return HttpResponse('error')    
+         
     else:
         print('errror')
             
@@ -156,27 +154,32 @@ def home_view(request):
     return render(request,'home.html') 
 
 
-def reject_view(request,id):
+def reject_view(request,username,pk):
+    try:
+        
+        user=myuser_model.objects.get(username=username)
+    except:
+        print('error')
+
     if request.method == 'POST':
-        if request.POST['reject_btn'] == "Reject":
-            
-            
-            new_value=myuser_model(status=request.POST['reject_btn'])  
-            new_value.save()  
-            var=list(empleave_model.objects.filter(id=id).values('email'))
-            subject='LEAVE'
-            msg="rejected"
-            to=var[0]['email']
-            res=send_mail(subject,msg,settings.EMAIL_HOST_USER,[to])
-            new_value.save()
-            if (res==1):
-                msg='sent mail successfully'
-            else:
-                msg='mail could not sent'
-            # return render(request,'display_user.html',{'new_value':new_value})
-            return HttpResponse(msg)
-            # return JsonResponse(var,safe=False)
+        emp=myuser_model.objects.filter(username=username)[0]
+        user.status = 'REJECT'
+        user.save()
+        
+        var=list(empleave_model.objects.filter(id=pk).values('email'))
+        subject='LEAVE'
+        msg="rejected"
+        to=var[0]['email']
+        send_mail(subject,msg,settings.EMAIL_HOST_USER,[to])
+        
+        if send_mail:
+            msg='sent mail successfully'
         else:
+            msg='mail could not sent'
+        
+        return HttpResponse(msg)
+        # return JsonResponse(var,safe=False)
+    else:
             return HttpResponse('error')   
 
      

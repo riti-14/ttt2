@@ -15,8 +15,8 @@ urlpatterns = [
 
 
 
-    path('approve_view/<int:id>',views.approve_view,name='approve'),
-    path('reject_view/<int:id>',views.reject_view,name='reject'),
+    path('approve_view/<str:username>/<int:pk>/',views.approve_view,name='approve'),
+    path('reject_view/<str:username>/<int:pk>/',views.reject_view,name='reject'),
     
 
 

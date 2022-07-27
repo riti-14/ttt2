@@ -29,11 +29,11 @@
           color: white;
         }
 
-        .green{
-          color:green;
+        td.blue{
+          color:blue;
         }
 
-        .red{
+        td.red{
           color:red;
         }
         
@@ -60,33 +60,21 @@
         <td> {{ getdata.id }}</td>
         <td> {{ getdata.first_name}}</td>
         <td> {{ getdata.username}}</td>
-        <td>{{getdata.status}}</td>
-        
-        
-        <td> <a href="{% url 'empleave'  %}">
-          <button >Apply for leave</button>
-         </a>
-         </td>
+        <td> <a href="{% url 'empleave'  %}"><button >Apply for leave</button></a></td>   
+        {% if getstatus.status == APPROVE %}
+        <td class="blue">{{getstatus}}</td>
+        {% elif getstatus.status == REJECT %}
+        <td class="red">{{getstatus}}</td>
 
-        
+        {% endif %}
+
+
         {% else %}
-
-
         <p>invalid</p>
         {% endif%}
+        
     </tr>
-
-    
-
-    
 </table>
-
-
-
-
-
-
-
 </body>
 </html>
 

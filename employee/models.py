@@ -33,10 +33,10 @@ class empleave_model(models.Model):
     email=models.EmailField(unique=True)
     from1=models.DateField()
     to1=models.DateField()
-    day=models.CharField(max_length=1,
+    day=models.CharField(max_length=30,
         choices=(
-            ('H','Half day') ,
-            ('F','Full day'),
+            ('HALF DAY','Half day') ,
+            ('FULL DAY','Full day'),
             )
             )
 
