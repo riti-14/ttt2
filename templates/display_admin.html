@@ -53,8 +53,9 @@
             
 
         </tr>
-          
-          
+          {% if not getuserdata.is_superuser %}
+          <h3>Total Employee: {{ user_count }}</h3>
+          {% endif %}
           {% for j in getuserdata %}
             
               <tr>

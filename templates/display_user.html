@@ -29,14 +29,7 @@
           color: white;
         }
 
-        td.blue{
-          color:blue;
-        }
-
-        td.red{
-          color:red;
-        }
-        
+       
     
     </style>
     
@@ -62,9 +55,11 @@
         <td> {{ getdata.username}}</td>
         <td> <a href="{% url 'empleave'  %}"><button >Apply for leave</button></a></td>   
         {% if getstatus.status == APPROVE %}
-        <td class="blue">{{getstatus}}</td>
-        {% elif getstatus.status == REJECT %}
-        <td class="red">{{getstatus}}</td>
+        <td style="color:green">{{getstatus}}</td>
+        {% endif %}
+
+        {% if getstatus.status == REJECT %}
+        <td style="color:red">{{getstatus}}</td>
 
         {% endif %}
 

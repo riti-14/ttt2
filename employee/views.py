@@ -1,10 +1,6 @@
-
-import imp
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from .models import empleave_model
-# ,status_model
-# from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import empleave_form
 from django.core.mail import send_mail  
@@ -12,36 +8,6 @@ from django.conf import settings
 from django.contrib.auth import login,authenticate
 # from django.http import JsonResponse
 from .models import myuser_model
-
-
-# def empregister_view(request):
-    
-#     if request.method == 'POST':
-#         myuserform=myuser_form(request.POST)
-#         if myuserform.is_valid():
-#             myuserform.save()
-#             return redirect('home')
-#     else:
-#             myuserform=myuser_form()
-
-#     # context={} 
-#     return render(request,'emp_register.html',{'myuserform':myuserform})
-
-
-# def home_view(request):
-#     return render(request,'home.html') 
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Create your views here.
@@ -57,8 +23,7 @@ def empregister_view(request):
 
         if name and email and user_name and password and confirm_password == ' ':
             return HttpResponse ('all fields required..')
-            # return redirect('empregister')
-
+            
         if len(name)>10:
             messages.error(request,'username must be under 10 character')
             return redirect('empregister')
@@ -66,7 +31,6 @@ def empregister_view(request):
         if not name.isalpha():
             messages.error(request,'username should only contain 10 characters')
             return redirect('empregister')
-
 
         if password!=confirm_password:
             messages.error(request,'Confirm Password do not match with Password')
@@ -92,9 +56,8 @@ def emplogin_view(request):
             if user.is_superuser :    
                 return redirect('displayadmin')
             else:
-                # messages.success(request,'you have successfully logged in...')
                 return redirect('displayuser',request.user.id)  
-                # request.user.id
+                
     else:
         return render(request,'emp_login.html')
 
@@ -106,7 +69,6 @@ def displayuser_view(request,id):
         getstatus=myuser_model.objects.filter(username=request.user).values('status')[0]['status']
         print(getstatus)
         context={'getdata':getdata,'getstatus':getstatus}
-        
         return render(request,'display_user.html',context)
     
         
@@ -115,13 +77,12 @@ def displayuser_view(request,id):
 def displayadmin_view(request):
     getuserdata =myuser_model.objects.all()
     getleavedata=empleave_model.objects.all()
-    # user_count = User.objects.count()
-    return render(request,'display_admin.html',{'getuserdata':getuserdata,'getleavedata':getleavedata})
-    # ,'user_count':user_count
+    user_count = myuser_model.objects.filter(is_superuser=False).count()
+    return render(request,'display_admin.html',{'getuserdata':getuserdata,'getleavedata':getleavedata,'user_count':user_count})
+    # 
 
 
 def approve_view(request,username,pk):
-     
     try:
         user=myuser_model.objects.get(username=username)
     except:
@@ -148,10 +109,13 @@ def approve_view(request,username,pk):
          
     else:
         print('errror')
-            
+
+
+
             
 def home_view(request):
     return render(request,'home.html') 
+
 
 
 def reject_view(request,username,pk):
@@ -190,12 +154,16 @@ def empleave_view(request):
         form=empleave_form(request.POST)
         if form.is_valid():
             name=request.POST['name']   
-            form.save()
+            form.save() 
+
             subject='Applied For Leave'
             msg=f"I'm {name}, applied for leave. can i take leave?"
-            to='mehtariti82@gmail.com'
-            res=send_mail(subject,msg,settings.EMAIL_HOST_USER,[to])
-            if (res==1):
+            # from_email=request.POST['email']
+            # print(from_email)
+            
+            to='ritim222000@gmail.com'
+            send_mail(subject,msg,form['email'],[to])
+            if send_mail:
                 msg='sent mail successfully'
             else:
                 msg='mail could not sent'

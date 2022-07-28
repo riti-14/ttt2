@@ -19,10 +19,5 @@ class empleave_form(ModelForm):
 
 
 
-# class myuser_form(UserCreationForm):
-#     class Meta:
-#         model=myuser_model
-#         fields='__all__'
-
 
 
