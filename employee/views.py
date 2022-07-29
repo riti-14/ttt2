@@ -1,9 +1,10 @@
+from email import message
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from .models import empleave_model
 from django.contrib import messages
 from .forms import empleave_form
-from django.core.mail import send_mail  
+from django.core.mail import send_mail,EmailMessage
 from django.conf import settings
 from django.contrib.auth import login,authenticate
 # from django.http import JsonResponse
@@ -156,17 +157,38 @@ def empleave_view(request):
             name=request.POST['name']   
             form.save() 
 
-            subject='Applied For Leave'
-            msg=f"I'm {name}, applied for leave. can i take leave?"
-            # from_email=request.POST['email']
-            # print(from_email)
+            from_email=request.POST['email']
+            print(from_email)
+
             
-            to='ritim222000@gmail.com'
-            send_mail(subject,msg,form['email'],[to])
-            if send_mail:
-                msg='sent mail successfully'
-            else:
-                msg='mail could not sent'
+            subject='Applied For Leave'
+            message=f"I'm {name}, applied for leave. can i take leave?"
+            to='riitmehtaa@gmail.com'
+
+            email=EmailMessage(
+                subject=subject,
+                body=message,
+                from_email=from_email,
+                to=[to],
+                reply_to=[from_email]
+
+            )
+            
+            email.send()
+            # data = {
+            #     'subject':subject,
+            #     'message':message,
+            #     'from_email':from_email,
+            #     'to':to,
+            
+            # }
+            
+            # send_mail(data=data)
+            # print(form['email'])
+            # if send_mail:
+            #     msg='sent mail successfully'
+            # else:
+            #     msg='mail could not sent'
             return HttpResponse('Applied for leave')
         else:
             print('error')     
